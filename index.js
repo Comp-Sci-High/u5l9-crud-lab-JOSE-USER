@@ -34,7 +34,8 @@ app.get("/add/country", async (req,res)=>{
   population: req.params.population,
   officialLanguage: req.params.officialLanguage,
   hasNuclearWeapons: req.params.hasNuclearWeapons,
-    }).addCountry.save()
+    }).save()
+    res.json(addCountry)
 })
 
 // Create a GET route for "/" that renders countries.ejs with every country from the Countries collection (1 point)
@@ -51,18 +52,19 @@ app.get("/", async (req,res)=>{
 // Test this route on post man
 
 app.patch("/update/:name", async (req,res)=>{
-  const {name} = await Country.findOneAndUpdate(
+  const updatedCountry = await Country.findOneAndUpdate(
     {country: name},
     {population},
     {new:true}
-   ,Countries)
+   ,Countries).save()
+   res.json(updatedCountry)
 })
 
 // Create a DELETE route handler for "/delete/country" that deletes a country of your choice (3 points)
 // Test this route on post man
 
 app.delete("/delete/country/:name", async (req,res)=>{
-  const countryDelte = await Country.findOneAndDelete({name})
+  const countryDelte = await Country.findOneAndDelete({country: name})
 })
 
 async function startServer() {
