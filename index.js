@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+app.use(express.static(__dirname + "/public"))
+
 app.use((req, res, next) => {
   console.log(req.method, req.url);
   next();
@@ -27,13 +29,13 @@ const Country = mongoose.model("Country", countrySchema, "Countries");
 // Create a POST route for "/add/country" that adds a country using the request body (3 points)
 // Use postman to add at least THREE different countries
 
-app.get("/add/country", async (req,res)=>{
+app.post("/add/country", async (req,res)=>{
   const addCountry = await new Country({
-  country: req.params.country,
-  flagURL: req.params.flagURL,
-  population: req.params.population,
-  officialLanguage: req.params.officialLanguage,
-  hasNuclearWeapons: req.params.hasNuclearWeapons,
+  country: req.body.country,
+  flagURL: req.body.flagURL,
+  population: req.body.population,
+  officialLanguage: req.body.officialLanguage,
+  hasNuclearWeapons: req.body.hasNuclearWeapons,
     }).save()
     res.json(addCountry)
 })
@@ -52,19 +54,16 @@ app.get("/", async (req,res)=>{
 // Test this route on post man
 
 app.patch("/update/:name", async (req,res)=>{
-  const updatedCountry = await Country.findOneAndUpdate(
-    {country: name},
-    {population},
-    {new:true}
-   ,Countries).save()
-   res.json(updatedCountry)
+  const updatedCountry = await Country.findOneAndUpdate({name: req.params.name}, {population: req.body.name}).save()
+    res.json(updatedCountry)
 })
 
 // Create a DELETE route handler for "/delete/country" that deletes a country of your choice (3 points)
 // Test this route on post man
 
 app.delete("/delete/country/:name", async (req,res)=>{
-  const countryDelte = await Country.findOneAndDelete({country: name})
+  const countryDelete = await Country.findOneAndDelete({name: req.params.id})
+  res.json(countryDelete)
 })
 
 async function startServer() {
