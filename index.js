@@ -54,9 +54,11 @@ app.get("/", async (req,res)=>{
 // Test this route on post man
 
 app.patch("/update/:name", async (req,res)=>{
-  const updatedCountry = await Country.findOneAndUpdate({name: req.params.name}, {population: req.body.name}).save()
+  const updatedCountry = await Country.findOneAndUpdate({name: req.params.name}, {population: req.body.population}).save()
     res.json(updatedCountry)
 })
+
+//  CODE TUTOR: https://chatgpt.com/share/6807e323-33e4-8001-aeb0-a049a33f9ea8
 
 // Create a DELETE route handler for "/delete/country" that deletes a country of your choice (3 points)
 // Test this route on post man
